@@ -1,0 +1,74 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 | OpenFOAM: The Open Source CFD Toolbox           |
+| \\      /  F ield         | Version:  v2012                                 |
+|  \\    /   O peration     | Website:  www.openfoam.com                      |
+|   \\  /    A nd           |                                                 |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(    
+    // 🔹 Define vegetation (trees) porous zone
+    {
+        name        vegetation;
+        type        cellZoneSet;
+        action      new;
+        source      boxToCell;
+        sourceInfo
+        {
+            // Coordenadas (x_min y_min z_min) (x_max y_max z_max)
+            // X: 10 m a 11.57 m
+            // Y: 0 (yMin) a 11.35 m (yMax)
+            // Z: 0.9 m (altura de la maceta) a 1.35 m (altura total)
+            box (10 0 0.9) (11.57 11.35 1.35);
+        }        
+    }
+    
+    // 🔹 Define pot (maceta) porous zone
+    {
+        name        pots;
+        type        cellZoneSet;
+        action      new;
+        source      boxToCell;
+        sourceInfo
+        {
+            // Coordenadas (x_min y_min z_min) (x_max y_max z_max)
+            // X: 10 m a 11.57 m
+            // Y: 0 (yMin) a 11.35 m (yMax)
+            // Z: 0.8 m (mesa) a 0.9 m (base de la planta)
+            box (10 0 0.8) (11.57 11.35 0.9);
+        }        
+    }
+
+    // 💡 Si también quieres modelar la mesa como un sólido/baffle,
+    // puedes definir una zona de celdas para ella también:
+    /*
+    {
+        name        table;
+        type        cellZoneSet;
+        action      new;
+        source      boxToCell;
+        sourceInfo
+        {
+            // X: 10 m a 11.57 m
+            // Y: 0 (yMin) a 11.35 m (yMax)
+            // Z: 0.1 m de grosor: 0.8 m - 0.1 m = 0.7 m a 0.8 m
+            // **Nota:** El diagrama la define como un 'baffle', lo que se hace de otra manera,
+            // pero esta celda podría usarse para darle propiedades de disipación de calor.
+            // box (10 0 0.7) (11.57 11.35 0.8);
+        }
+    }
+    */
+
+);
+
+// ************************************************************************* //

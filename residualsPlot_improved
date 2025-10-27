@@ -1,0 +1,29 @@
+# --- PANEL DE CONTROL ---     sprintf("< awk '/Solving for p_rgh/ {gsub(\",\",\"\"); print $8}' %s", logFile) every 3 title 'p_rgh'   w l lw 2, \
+# 1. Escribir el nombre del archivo de log aquí
+logFile = "log.simpleFoam"
+
+# --- CONFIGURACIÓN DE LA GRÁFICA ---
+set terminal png size 1024,768 enhanced font "Times New Roman,14"
+set output 'Residuals.png'
+set size 1.0, 1.0
+set origin 0,0
+set key top right
+set logscale y
+set format y "%.1e"
+set grid
+
+set title "Initial Residuals" font "Times New Roman,18" noenhanced
+set xlabel "Iteration (Time Step)" font "Times New Roman,14"
+set ylabel "Residual" font "Times New Roman,14"
+
+# --- COMANDO DE PLOT ---
+
+plot \
+    sprintf("< awk '/Solving for Ux/ {gsub(\",\",\"\"); print $8}' %s", logFile) title 'Ux'       w l lw 2, \
+    sprintf("< awk '/Solving for Uy/ {gsub(\",\",\"\"); print $8}' %s", logFile) title 'Uy'       w l lw 2, \
+    sprintf("< awk '/Solving for Uz/ {gsub(\",\",\"\"); print $8}' %s", logFile) title 'Uz'       w l lw 2, \
+    sprintf("< awk '/Solving for p/ {gsub(\",\",\"\"); print $8}' %s", logFile)  every 3 title 'p'   w l lw 2, \
+    sprintf("< awk '/Solving for T/ {gsub(\",\",\"\"); print $8}' %s", logFile) title 'T'        w l lw 2, \
+    sprintf("< awk '/Solving for specHum/ {gsub(\",\",\"\"); print $8}' %s", logFile) title 'specHum'     w l lw 2, \
+    sprintf("< awk '/Solving for epsilon/ {gsub(\",\",\"\"); print $8}' %s", logFile) title 'epsilon'  w l lw 2, \
+    sprintf("< awk '/Solving for k/ {gsub(\",\",\"\"); print $8}' %s", logFile) title 'k'        w l lw 2
